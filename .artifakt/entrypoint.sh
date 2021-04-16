@@ -9,6 +9,7 @@ env
 APP_ENV=dev composer --no-ansi --no-interaction install --no-cache --no-progress  --no-autoloader --no-scripts
 
 # wait for database to be ready
+export ARTIFAKT_MYSQL_HOST=mysql
 /.artifakt/wait-for-it.sh $ARTIFAKT_MYSQL_HOST:3306
 
 # as per symfony good practices
