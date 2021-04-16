@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+
+    app:
+        build: .
+        image: artifakt-symfony-demo:local
+        ports:
+            - '8000:80'
+        env_file:
+            - .env.local
+        volumes:
+            - symfonydemo-var-uploads:/var/www/html/var/uploads
+        environment:
+            MAILER_DSN: null://null
+            DATABASE_URL: mysql://${ARTIFAKT_MYSQL_USER:-usr}:${ARTIFAKT_MYSQL_PASSWORD:-pass}@${ARTIFAKT_MYSQL_HOST:-db}:${ARTIFAKT_MYSQL_PORT:-3306}/${ARTIFAKT_MYSQL_DATABASE_NAME:-app}
+
+    db:
+        image: 'mariadb:latest'
+        env_file:
+            - .env.local
+        environment:
+            MYSQL_DATABASE: ${ARTIFAKT_MYSQL_DATABASE_NAME:-usr}
+            MYSQL_USER: ${ARTIFAKT_MYSQL_USER:-pass}
+            MYSQL_PASSWORD: ${ARTIFAKT_MYSQL_PASSWORD:-app}
+        ports:
+            - '3306'
+
+volumes:
+    symfonydemo-var-uploads:
