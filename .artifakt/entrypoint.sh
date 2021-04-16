@@ -22,7 +22,11 @@ php bin/console cache:clear --env=prod && composer dump-autoload
 APP_ENV=dev php bin/console doctrine:fixtures:load --no-ansi --no-interaction
 
 #link logs to /var/log/artifakt to collect all of them
-mkdir -p /var/log/artifakt
-ln -s /var/www/html/var/log /var/log/artifakt
+#mkdir -p /var/log/artifakt
+#ln -s /var/www/html/var/log /var/log/artifakt
+
+if [ -d "/var/log/artifakt" ] ; then
+  chown www-data:www-data -R /var/log/artifakt
+fi
 
 echo ">>>>>>>>>>>>>> END CUSTOM ENTRYPOINT SCRIPT <<<<<<<<<<<<<<<<< "
