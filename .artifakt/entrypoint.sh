@@ -21,11 +21,9 @@ php bin/console cache:clear --env=prod && composer dump-autoload
 # https://miary.dev/2020/12/20/symfony-doctrinefixturesbundle-installe-doctrinefixturesload-non-trouve/
 APP_ENV=dev php bin/console doctrine:fixtures:load --no-ansi --no-interaction
 
-#link logs to /var/log/artifakt to collect all of them
-#mkdir -p /var/log/artifakt
-#ln -s /var/www/html/var/log /var/log/artifakt
-
+#allow www-data user to write in artifakt logs folder
 if [ -d "/var/log/artifakt" ] ; then
+  echo "updating artifakt logs folder owner"
   chown www-data:www-data -R /var/log/artifakt
 fi
 
