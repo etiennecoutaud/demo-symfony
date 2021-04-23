@@ -21,8 +21,12 @@ php bin/console cache:clear --env=prod && composer dump-autoload
 # https://miary.dev/2020/12/20/symfony-doctrinefixturesbundle-installe-doctrinefixturesload-non-trouve/
 APP_ENV=dev php bin/console doctrine:fixtures:load --no-ansi --no-interaction
 
-#link logs to /var/log/artifakt to collect all of them
-mkdir -p /var/log/artifakt
-ln -s /var/www/html/var/log /var/log/artifakt
+# enable catchall folder, don't forget to set APP_LOG_DIR to /var/log/artifakt
+mkdir -p /var/log/artifakt && chown -R www-data:www-data /var/log/artifakt
+
+# set correct permissions on /data folder and create symlinks
+chown -R www-data:www-data /data
+ln -s /data/uploads /var/www/html/public/uploads
+
 
 echo ">>>>>>>>>>>>>> END CUSTOM ENTRYPOINT SCRIPT <<<<<<<<<<<<<<<<< "
