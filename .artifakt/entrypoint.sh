@@ -9,9 +9,9 @@ env
 # enable catchall folder, don't forget to set APP_LOG_DIR to /var/log/artifakt
 mkdir -p /var/log/artifakt && chown -R www-data:www-data /var/log/artifakt
 
-# set correct permissions on /data folder and create symlinks
+# set correct permissions on /data folder and create symlink
 mkdir -p /data/uploads && chown -R www-data:www-data /data
-ln -s /data/uploads /var/www/html/public/uploads
+ln -s /data/uploads/ /var/www/html/public/
 
 APP_ENV=dev composer --no-ansi --no-interaction install --no-cache --no-progress  --no-autoloader --no-scripts
 
