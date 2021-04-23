@@ -8,17 +8,7 @@ env
 
 APP_ENV=dev composer --no-ansi --no-interaction install --no-cache --no-progress  --no-autoloader --no-scripts
 
-# Temp define APP_LOG_DIR variable while waiting for console env variables to be working
-export APP_LOG_DIR=/var/log/artifakt
-
-#allow www-data user to write in artifakt logs folder
-if [[ -n ${APP_LOG_DIR} && -d ${APP_LOG_DIR} ]]; then
-  echo "updating ${APP_LOG_DIR} folder permissions"
-  chown www-data:www-data -R "${APP_LOG_DIR}"
-fi
-
 # wait for database to be ready
-export ARTIFAKT_MYSQL_HOST=mysql
 /.artifakt/wait-for-it.sh $ARTIFAKT_MYSQL_HOST:3306
 
 # as per symfony good practices
@@ -30,5 +20,13 @@ php bin/console cache:clear --env=prod && composer dump-autoload
 # force fixtures (temporary force APP_ENV=dev even if it is set to "prod")
 # https://miary.dev/2020/12/20/symfony-doctrinefixturesbundle-installe-doctrinefixturesload-non-trouve/
 APP_ENV=dev php bin/console doctrine:fixtures:load --no-ansi --no-interaction
+
+# enable catchall folder, don't forget to set APP_LOG_DIR to /var/log/artifakt
+mkdir -p /var/log/artifakt && chown -R www-data:www-data /var/log/artifakt
+
+# set correct permissions on /data folder and create symlinks
+chown -R www-data:www-data /data
+ln -s /data/uploads /var/www/html/public/uploads
+
 
 echo ">>>>>>>>>>>>>> END CUSTOM ENTRYPOINT SCRIPT <<<<<<<<<<<<<<<<< "
