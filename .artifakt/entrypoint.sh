@@ -10,7 +10,7 @@ env
 mkdir -p /var/log/artifakt && chown -R www-data:www-data /var/log/artifakt
 
 # set correct permissions on /data folder and create symlinks
-chown -R www-data:www-data /data
+mkdir -p /data/uploads && chown -R www-data:www-data /data
 ln -s /data/uploads /var/www/html/public/uploads
 
 APP_ENV=dev composer --no-ansi --no-interaction install --no-cache --no-progress  --no-autoloader --no-scripts
